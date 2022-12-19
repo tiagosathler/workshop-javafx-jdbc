@@ -36,16 +36,18 @@ public class MainViewController implements Initializable {
 
 	@FXML
 	public void onMenuItemDepartmentAction() {
-		loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
+		Consumer<DepartmentListController> lambda = (DepartmentListController controller) -> {
 			controller.setDepartmentService(new DepartmentService());
 			controller.updateTableView();
-		});
+		};
+		loadView("/gui/DepartmentList.fxml", lambda);
 	}
 
 	@FXML
 	private void onMenuItemAboutAction() {
-		loadView("/gui/About.fxml", x -> {
-		});
+		Consumer<Void> lambda = x -> {
+		};
+		loadView("/gui/About.fxml", lambda);
 	}
 
 	@Override
