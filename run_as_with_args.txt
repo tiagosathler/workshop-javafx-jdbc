@@ -1,0 +1,1 @@
+--module-path "/home/tiago/eclipse/libs/javafx-sdk-19/lib" --add-modules=javafx.fxml,javafx.controls
