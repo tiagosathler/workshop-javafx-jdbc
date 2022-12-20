@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
@@ -114,7 +115,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 			SellerFormController controller = loader.getController();
 			controller.setEntity(obj);
-			controller.setDeparmentService(new SellerService());
+			controller.setServices(new SellerService(), new DepartmentService());
+			controller.loadAssociatedObjects();
 			SellerListController listener = this;
 			controller.subscribeDataChangeListener(listener);
 			controller.updateFormDate();
@@ -127,6 +129,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
@@ -183,6 +186,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 				service.remove(obj);
 				updateTableView();
 			} catch (DbIntegrityException e) {
+				e.printStackTrace();
 				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
 			}
 		}
