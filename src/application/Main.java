@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		Locale.setDefault(Locale.US);
+
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
 			ScrollPane scrollPane = loader.load();

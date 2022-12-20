@@ -20,7 +20,7 @@ public class SellerDaoJDBC implements SellerDao {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	
+
 	private static final String DB_EXCEPTION_MSG = "Something was wrong: ";
 	private static final String UNEXPECTED_ERROR = "Unexpected error! No rows affected!";
 
@@ -31,11 +31,8 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public void insert(Seller seller) {
 		try {
-			ps = conn.prepareStatement(""
-					+ "INSERT INTO seller "
-					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
-					+ "VALUES "
-					+ "(?, ?, ?, ?, ?);",
+			ps = conn.prepareStatement("" + "INSERT INTO seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) " + "VALUES " + "(?, ?, ?, ?, ?);",
 					Statement.RETURN_GENERATED_KEYS);
 
 			ps.setString(1, seller.getName());
@@ -63,16 +60,12 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closePreparedStatment(ps);
 		}
 	}
-	
+
 	@Override
 	public Seller findById(Integer id) {
 		try {
-			ps = conn.prepareStatement(""
-					+ "SELECT s.*, d.Name as DepName "
-					+ "FROM seller AS s "
-					+ "INNER JOIN department AS d "
-					+ "ON s.DepartmentId = d.Id "
-					+ "WHERE s.id = ?;");
+			ps = conn.prepareStatement("" + "SELECT s.*, d.Name as DepName " + "FROM seller AS s "
+					+ "INNER JOIN department AS d " + "ON s.DepartmentId = d.Id " + "WHERE s.id = ?;");
 
 			ps.setInt(1, id);
 
@@ -91,16 +84,12 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeResultSet(rs);
 		}
 	}
-	
+
 	@Override
 	public List<Seller> findAll() {
 		try {
-			ps = conn.prepareStatement(""
-					+ "SELECT s.*, d.Name AS DepName "
-					+ "FROM seller AS s "
-					+ "INNER JOIN department as d "
-					+ "ON s.DepartmentId = d.Id "
-					+ "ORDER BY Name;");
+			ps = conn.prepareStatement("" + "SELECT s.*, d.Name AS DepName " + "FROM seller AS s "
+					+ "INNER JOIN department as d " + "ON s.DepartmentId = d.Id " + "ORDER BY Name;");
 
 			rs = ps.executeQuery();
 
@@ -132,15 +121,8 @@ public class SellerDaoJDBC implements SellerDao {
 	@Override
 	public void update(Seller seller) {
 		try {
-			ps = conn.prepareStatement(""
-					+ "UPDATE seller "
-					+ "SET "
-					+ "Name = ?, "
-					+ "Email = ?, "
-					+ "BirthDate = ?, "
-					+ "BaseSalary = ?, "
-					+ "DepartmentId = ? "
-					+ "WHERE Id = ?;");
+			ps = conn.prepareStatement("" + "UPDATE seller " + "SET " + "Name = ?, " + "Email = ?, " + "BirthDate = ?, "
+					+ "BaseSalary = ?, " + "DepartmentId = ? " + "WHERE Id = ?;");
 
 			ps.setString(1, seller.getName());
 			ps.setString(2, seller.getEmail());
@@ -179,13 +161,9 @@ public class SellerDaoJDBC implements SellerDao {
 
 	public List<Seller> findByDepartment(Department department) {
 		try {
-			ps = conn.prepareStatement(""
-					+ "SELECT s.*, d.Name as DepName "
-					+ "FROM seller As s "
-					+ "INNER JOIN department As d "
-					+ "ON s.DepartmentId = d.Id "
-					+ "WHERE s.DepartmentId = ? "
-					+ "ORDER BY Name;");
+			ps = conn.prepareStatement(
+					"" + "SELECT s.*, d.Name as DepName " + "FROM seller As s " + "INNER JOIN department As d "
+							+ "ON s.DepartmentId = d.Id " + "WHERE s.DepartmentId = ? " + "ORDER BY Name;");
 
 			ps.setInt(1, department.getId());
 
@@ -225,7 +203,9 @@ public class SellerDaoJDBC implements SellerDao {
 		seller.setName(rs.getString("Name"));
 		seller.setEmail(rs.getString("Email"));
 		seller.setBaseSalary(rs.getDouble("BaseSalary"));
-		seller.setBirthDate(rs.getDate("BirthDate"));
+		// bug - deve ser do java.util e não do java.sql
+		// seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setBirthDate(new java.util.Date(rs.getTimestamp("BirthDate").getTime()));
 		seller.setDepartment(department);
 		return seller;
 	}
