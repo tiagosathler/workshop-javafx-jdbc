@@ -42,8 +42,8 @@
 					prefWidth="93.0" text="Birth Date" />
 				<TableColumn fx:id="tableColumnBaseSalary"
 					prefWidth="99.0" text="BaseSalary" />
-				<TableColumn fx:id="tableColumnEDIT" prefWidth="33.0" />
-				<TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
+				<TableColumn fx:id="tableColumnEDIT" prefWidth="62.0" />
+				<TableColumn fx:id="tableColumnREMOVE" prefWidth="109.0" />
 			</columns>
 		</TableView>
 	</children>
